@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
-import phonetics
+from phonetics import Phonetics
 
-class DutchPhonetics(phonetics.Phonetics):
+
+class DutchPhonetics(Phonetics):
     def _word_ruleset(self, word):
         t = DutchPhonetics._table
 
@@ -12,6 +13,23 @@ class DutchPhonetics(phonetics.Phonetics):
         return word
 
     def _syllable_ruleset(self, syllables):
+        for s in range(len(syllables)):
+            e = len(syllables[s])
+            ew = lambda suffix: syllables[s].endswith(suffix)
+            sw = lambda prefix: syllables[s].startswith(prefix)
+            ls = syllables[s - 1] if s > 0 else u''
+            rs = syllables[s + 1] if s + 1 < len(syllables) else u''
+
+            def r(key, start, end=-1):
+                syllables[s] = Phonetics._replace_letters(syllables[s], self._table[key], start, end)
+
+            if ew('uw'):
+                r('uw', e - 2)
+            if ew('eeuw'):
+                r('eeu', e - 4)
+            if ew('ieuw'):
+                r('ieu', e - 4)
+
         return syllables
 
     _table = {
@@ -47,7 +65,7 @@ class DutchPhonetics(phonetics.Phonetics):
         'aai': 'आई',
         'oei': 'ओएइ',
         'ooi': 'ऊई',
-        'uw': 'उव',
+        'uw': 'ऊव',
         'eeu': 'ईउ',  # these always end in w when its at the end
         'ieu': 'इएउ',  # these always end in w when its at the end
 
