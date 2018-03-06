@@ -23,7 +23,7 @@ class Phoneticate:
         word_dict = {x: self._hyphen.inserted(x) for x in words_nopunct}
 
         for word in word_dict:
-            word_dict[word] = self._phonetics.word_to_devanagari(word)
+            word_dict[word] = self._phonetics.word_to_devanagari(word_dict[word])
 
         for w in range(len(words)):
             word = words[w]
@@ -35,7 +35,7 @@ class Phoneticate:
 
 
 if __name__ == '__main__':
-    debug_text = u"een achterbadkamerdeur was schuw en stond wagenwijd en fatsoenlijk open vandaag, waarom zijn dan zeeën zo zout en egoïstisch?"
+    debug_text = u"één eren kopen koperen achterbadkamerdeur was even schuw en stond wagenwijd en fatsoenlijk open vandaag, waarom zijn dan zeeën zo zout, egoïstisch en zachtjes? Klein zuchtje."
     sentence = unicode(raw_input('Enter text: '), 'utf-8') if not debug_text else debug_text
 
     phoneticate = Phoneticate('nl-NL')

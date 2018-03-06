@@ -10,6 +10,9 @@ class Phonetics:
                 self._table_n = len(k)
 
     def word_to_devanagari(self, word):
+        for a in self._accents:
+            word = word.replace(a, self._accents[a])
+
         syllables = word.split('-')
 
         # exceptions for words as a whole
@@ -36,9 +39,9 @@ class Phonetics:
 
         assert not start > end, 'start is larger than end'
         replaced = False
-        letters = [str(x) for x in word]
+        letters = [x for x in word]
         for c in range(len(letters)):
-            if start <= c <= end:
+            if start <= c < end:
                 if replaced:
                     letters[c] = ''
                 else:
@@ -52,4 +55,6 @@ class Phonetics:
     def _syllable_ruleset(self, syllables):
         raise NotImplementedError
 
+    _vowels = ('a', 'e', 'i', 'u', 'o', 'y')
+    _accents = dict()
     _table = dict()
